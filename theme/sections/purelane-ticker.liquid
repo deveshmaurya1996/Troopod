@@ -1,0 +1,80 @@
+<div class="pl-root pl-ticker" data-purelane aria-hidden="true">
+  <div class="pl-ticker__track">
+    {%- for i in (1..2) -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'item' -%}
+          <span {{ block.shopify_attributes }}>
+            {{ block.settings.text_before | escape }}
+            {%- if block.settings.text_accent != blank -%}
+              <b>{{ block.settings.text_accent | escape }}</b>
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Purelane ticker",
+  "tag": "div",
+  "class": "section-purelane-ticker",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Ticker item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text_before",
+          "label": "Text",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "text_accent",
+          "label": "Accent text",
+          "default": "on every bundle across India"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane ticker",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "text_before": "Free shipping",
+            "text_accent": "on every bundle across India"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text_before": "100% plant-based",
+            "text_accent": "and non-toxic"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text_before": "Loved by",
+            "text_accent": "30,000+ happy homes"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text_before": "Buy 3",
+            "text_accent": "at flat ₹499"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

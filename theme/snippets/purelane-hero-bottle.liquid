@@ -1,0 +1,26 @@
+{%- liquid
+  assign slot = slot | default: 'a'
+  assign delay = delay | default: '1'
+  assign bottle = bottle | default: 'kbtl'
+  assign alt_text = alt | default: 'Purelane product'
+  assign has_media = false
+  if product != blank and product.featured_media
+    assign has_media = true
+  elsif image != blank
+    assign has_media = true
+  endif
+-%}
+<span
+  class="pl-hp pl-hp--{{ slot }} pl-hp--d{{ delay }}{% unless has_media %} pl-hp--bottle pl-hp--{{ bottle }}{% endunless %}"
+  {% unless has_media %}
+    role="img"
+    aria-label="{{ alt_text | escape }}"
+    style="background-image:url({{ 'purelane-p-' | append: bottle | append: '.svg' | asset_url }})"
+  {% endunless %}
+>
+  {%- if product != blank and product.featured_media -%}
+    {% render 'purelane-media', image: product.featured_media, alt: alt_text, loading: loading, width: 500 %}
+  {%- elsif image != blank -%}
+    {% render 'purelane-media', image: image, alt: alt_text, loading: loading, width: 500 %}
+  {%- endif -%}
+</span>

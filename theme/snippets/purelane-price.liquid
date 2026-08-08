@@ -1,0 +1,27 @@
+{%- liquid
+  assign target = product.selected_or_first_available_variant
+  if variant != blank
+    assign target = variant
+  endif
+  assign price = target.price
+  assign compare = target.compare_at_price
+  assign show_compare = false
+  if compare > price
+    assign show_compare = true
+    assign save_amount = compare | minus: price
+    assign save_pct = save_amount | times: 100.0 | divided_by: compare | round
+  endif
+  assign now_class = 'pl-price__now'
+  if size == 'lg'
+    assign now_class = 'pl-price__now'
+  endif
+-%}
+<div class="pl-price">
+  <strong class="{{ now_class }}">{{ price | money_without_trailing_zeros }}</strong>
+  {%- if show_compare -%}
+    <s class="pl-price__was">{{ compare | money_without_trailing_zeros }}</s>
+    {%- if show_save != false -%}
+      <em class="pl-price__cut">{{ save_pct }}% off</em>
+    {%- endif -%}
+  {%- endif -%}
+</div>

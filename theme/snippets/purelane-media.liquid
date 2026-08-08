@@ -1,0 +1,37 @@
+{%- liquid
+  assign alt_text = alt | default: ''
+  assign media_class = class | default: 'pl-media'
+  assign img_width = width | default: 600
+  assign img_sizes = sizes | default: '(min-width: 860px) 200px, 40vw'
+-%}
+{%- if image != blank -%}
+  {%- if loading == 'eager' -%}
+    {{
+      image
+      | image_url: width: img_width
+      | image_tag: class: media_class, widths: '200, 300, 400, 600, 800', sizes: img_sizes, alt: alt_text, loading: 'eager', fetchpriority: 'high'
+    }}
+  {%- else -%}
+    {{
+      image
+      | image_url: width: img_width
+      | image_tag: class: media_class, widths: '200, 300, 400, 600, 800', sizes: img_sizes, alt: alt_text, loading: 'lazy'
+    }}
+  {%- endif -%}
+{%- elsif src != blank -%}
+  <img
+    class="{{ media_class }}"
+    src="{{ src }}"
+    alt="{{ alt_text | escape }}"
+    {% if loading == 'eager' %}
+      loading="eager"
+      fetchpriority="high"
+    {% else %}
+      loading="lazy"
+    {% endif %}
+    width="{{ width | default: 300 }}"
+    height="{{ height | default: 400 }}"
+  >
+{%- else -%}
+  <span class="pl-media--empty" role="img" aria-label="{{ alt_text | default: 'No image' | escape }}"></span>
+{%- endif -%}

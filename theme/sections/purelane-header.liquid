@@ -1,0 +1,107 @@
+<header class="pl-root pl-hdr" data-purelane data-pl-hdr>
+  <div class="pl-navpill pl-glass">
+    <a class="pl-brand" href="{{ section.settings.home_link | default: routes.root_url }}" aria-label="{{ section.settings.brand_name | escape }} home">
+      <span class="pl-brand__mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3 20.5 8v8L12 21 3.5 16V8L12 3Z"/>
+          <path d="M12 12 20.5 8M12 12v9M12 12 3.5 8"/>
+        </svg>
+      </span>
+      <span class="pl-brand__txt">
+        <span class="pl-brand__n1">{{ section.settings.brand_name | escape }}</span>
+        <span class="pl-brand__n2">{{ section.settings.brand_tagline | escape }}</span>
+      </span>
+    </a>
+
+    <nav class="pl-nav" aria-label="Main">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link' -%}
+          <a href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+            {{ block.settings.label | escape }}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+
+    <div class="pl-navtools">
+      <a class="pl-ico pl-ico--hide-s" href="{{ routes.search_url }}" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </a>
+      <a class="pl-ico pl-ico--hide-s" href="{{ routes.account_url }}" aria-label="Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg>
+      </a>
+      <a class="pl-ico" href="{{ routes.cart_url }}" aria-label="Cart, {{ cart.item_count }} items">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h2l2.2 10.4a1.6 1.6 0 0 0 1.6 1.3h7.6a1.6 1.6 0 0 0 1.6-1.3L20.5 9H6.4"/><circle cx="10" cy="20.5" r="1.1"/><circle cx="17.5" cy="20.5" r="1.1"/></svg>
+        <span class="pl-dot">{{ cart.item_count }}</span>
+      </a>
+      <button type="button" class="pl-ico pl-burger" aria-label="Menu" data-pl-menu-toggle aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="pl-nav-mobile" data-pl-menu hidden>
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'link' -%}
+        <a href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | escape }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  </nav>
+</header>
+
+{% schema %}
+{
+  "name": "Purelane header",
+  "tag": "div",
+  "class": "section-purelane-header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand name",
+      "default": "Purelane"
+    },
+    {
+      "type": "text",
+      "id": "brand_tagline",
+      "label": "Tagline",
+      "default": "Clean, simply"
+    },
+    {
+      "type": "url",
+      "id": "home_link",
+      "label": "Home link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Nav link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shop"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane header",
+      "blocks": [
+        { "type": "link", "settings": { "label": "Home", "link": "/" } },
+        { "type": "link", "settings": { "label": "Shop", "link": "#shop" } },
+        { "type": "link", "settings": { "label": "Bundles", "link": "#bundles" } },
+        { "type": "link", "settings": { "label": "Reviews", "link": "#reviews" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

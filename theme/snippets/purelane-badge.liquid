@@ -1,0 +1,9 @@
+{%- liquid
+  assign variant = 'pill'
+  if style != blank
+    assign variant = style
+  endif
+-%}
+{%- if label != blank -%}
+  <span class="pl-badge{% if variant == 'flag' %} pl-badge--flag{% elsif variant == 'save' %} pl-badge--save{% endif %}">{{ label | escape }}</span>
+{%- endif -%}

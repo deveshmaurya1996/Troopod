@@ -1,0 +1,56 @@
+{%- if product != blank -%}
+  {%- liquid
+    assign card_product = product
+    assign variant = card_product.selected_or_first_available_variant
+    assign badge_label = card_product.metafields.custom.badge.value | default: card_product.metafields.custom.badge
+    assign rating = card_product.metafields.custom.rating.value | default: card_product.metafields.custom.rating
+    assign review_count = card_product.metafields.custom.review_count.value | default: card_product.metafields.custom.review_count
+    assign available = variant.available
+    assign delay_class = ''
+    if reveal_delay != blank
+      assign delay_class = ' pl-rv-d' | append: reveal_delay
+    endif
+    assign media_alt = card_product.title
+    if card_product.featured_media and card_product.featured_media.alt != blank
+      assign media_alt = card_product.featured_media.alt
+    endif
+  -%}
+  <article class="pl-glass pl-card pl-rv{{ delay_class }}">
+    <a class="pl-card__shot" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
+      {%- if badge_label != blank -%}
+        {% render 'purelane-badge', label: badge_label %}
+      {%- endif -%}
+      {%- if card_product.featured_media -%}
+        {% render 'purelane-media', image: card_product.featured_media, alt: media_alt, width: 400 %}
+      {%- else -%}
+        {% render 'purelane-media', alt: media_alt %}
+      {%- endif -%}
+    </a>
+    <h4 class="pl-card__title">
+      <a href="{{ card_product.url }}">{{ card_product.title }}</a>
+    </h4>
+    {%- if rating != blank -%}
+      <div class="pl-card__rate">
+        <b>★ {{ rating }}</b>
+        {%- if review_count != blank -%}
+          <span>· {{ review_count }} reviews</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    {% render 'purelane-price', product: card_product %}
+    {%- if available -%}
+      <button
+        type="button"
+        class="pl-btn pl-btn--ghost pl-btn--sm"
+        data-pl-atc
+        data-variant-id="{{ variant.id }}"
+      >
+        Add to cart
+      </button>
+    {%- else -%}
+      <button type="button" class="pl-btn pl-btn--ghost pl-btn--sm" disabled aria-disabled="true">
+        Sold out
+      </button>
+    {%- endif -%}
+  </article>
+{%- endif -%}
